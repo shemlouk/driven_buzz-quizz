@@ -5,14 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/criacao-quizz.css" />
   </head>
   <body>
     <div class="cabecalho">
       <p>BuzzQuizz</p>
     </div>
-    <div class="cq-container">
-      <p>Comece pelo começo</p>
+    <div class="cq-container-comeco">
+      <p class="cq-titulo-pagina">Comece pelo começo</p>
       <div class="cq-container-central">
         <div class="cq-container-inputs">
           <div class="cq-caixa-input-individual">
@@ -29,15 +30,23 @@
               type="text"
               placeholder="URL da imagem do seu quizz"
             />
-            <div class="cq-input-url-imagem-quizz"></div>
+            <div class="cq-input-url-imagem-quizz cq-validacao"></div>
           </div>
           <div class="cq-caixa-input-individual">
-            <input type="text" placeholder="Quantidade de perguntas do quizz" />
-            <div class="cq-input-qtd-perguntas-quizz"></div>
+            <input
+              class="cq-qtd-perguntas"
+              type="number"
+              placeholder="Quantidade de perguntas do quizz"
+            />
+            <div class="cq-input-qtd-perguntas-quizz cq-validacao"></div>
           </div>
           <div class="cq-caixa-input-individual">
-            <input type="text" placeholder="Quantidade de níveis do quizz" />
-            <div class="cq-input-qtd-niveis-quizz"></div>
+            <input
+              class="cq-qtd-niveis"
+              type="text"
+              placeholder="Quantidade de níveis do quizz"
+            />
+            <div class="cq-input-qtd-niveis-quizz cq-validacao"></div>
           </div>
         </div>
       </div>
@@ -45,6 +54,17 @@
         Prosseguir pra criar perguntas
       </button>
     </div>
+
+    <div class="cq-perguntas-quizz cq-escondido"></div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/criacao-quizz.js"></script>
   </body>
