@@ -22,12 +22,14 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: #e5e5e5;
 }
+
 .cq-container {
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .cq-container p {
@@ -35,4 +37,63 @@ body {
   font-weight: 700;
   font-size: 23px;
   text-align: center;
+}
+
+.cq-container-central {
+  width: 600px;
+  height: 256px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.cq-container-inputs {
+  width: 90%;
+  margin-top: 20px;
+}
+
+.cq-container-inputs input {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #d1d1d1;
+  font-weight: 400;
+  font-size: 19px;
+  font-style: italic;
+  border-radius: 5px;
+}
+
+.cq-container-inputs input::placeholder {
+  font-weight: 400;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 20px;
+}
+
+.cq-container button {
+  width: 350px;
+  height: 54px;
+  background-color: #ec362d;
+  font-weight: 400;
+  font-size: 21px;
+  text-align: center;
+  color: #fff5f4;
+  border: 0px;
+  border-radius: 15px;
+  margin-top: 85px;
+}
+
+.cq-caixa-input-individual {
+  margin-bottom: 5px;
+}
+
+.cq-validacao {
+  font-weight: 400;
+  font-size: 16px;
+  color: #ec362d;
+}
+
+.cq-input-validate {
+  background-color: #ffe9e9;
 }

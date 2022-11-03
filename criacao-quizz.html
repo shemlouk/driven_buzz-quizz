@@ -13,8 +13,39 @@
     </div>
     <div class="cq-container">
       <p>Comece pelo começo</p>
+      <div class="cq-container-central">
+        <div class="cq-container-inputs">
+          <div class="cq-caixa-input-individual">
+            <input
+              class="cq-titulo-quizz"
+              type="text"
+              placeholder="Título do seu quizz"
+            />
+            <div class="cq-input-titulo-quizz cq-validacao"></div>
+          </div>
+          <div class="cq-caixa-input-individual">
+            <input
+              class="cq-url-imagem-quizz"
+              type="text"
+              placeholder="URL da imagem do seu quizz"
+            />
+            <div class="cq-input-url-imagem-quizz"></div>
+          </div>
+          <div class="cq-caixa-input-individual">
+            <input type="text" placeholder="Quantidade de perguntas do quizz" />
+            <div class="cq-input-qtd-perguntas-quizz"></div>
+          </div>
+          <div class="cq-caixa-input-individual">
+            <input type="text" placeholder="Quantidade de níveis do quizz" />
+            <div class="cq-input-qtd-niveis-quizz"></div>
+          </div>
+        </div>
+      </div>
+      <button class="cq-button-comeco" type="button">
+        Prosseguir pra criar perguntas
+      </button>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/criacao-quizz.js"></script>
   </body>
 </html>
