@@ -13,38 +13,53 @@
 </head>
 
 <body>
-  <div class="cabecalho">
-    <p>BuzzQuizz</p>
-  </div>
+  <header>
+    <a href="./1-lista-quizz.html">BuzzQuizz</a>
+  </header>
 
-  <div class="lq-containerQUsuario ">
+  <div class="lq-containerQUsuario lq-hidden">
     <p>Você não criou nenhum quizz ainda :(</p>
-    <button class="lq-criarquizzbutton" onclick="window.location.href='./3-criacao-quizz.html';">Criar Quizz</button>
+    <button class="lq-criarquizzbutton" onclick="location.href='./3-criacao-quizz.html';">Criar Quizz</button>
   </div>
-  <div class="lq-container lq-hidden">
+  <div class="lq-container ">
     <div class="lq-containerUsuario ">
       <p>Seus quizzes</p>
-      <ion-icon name="add-circle-sharp" onclick="lqCriarQuizz()"></ion-icon>
+      <ion-icon name="add-circle-sharp" onclick="location.href='./3-criacao-quizz.html';"></ion-icon>
     </div>
     <div class="lq-quizzesUsuario">
-      <ul>
-        <li>
-          Aqui vão todos os quizzes do usuário
-        </li>
-      </ul>
+      <div onclick="renderizarQuizz()" class="lq-quizz"
+        style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url(https://www.istoedinheiro.com.br/wp-content/uploads/sites/17/2019/10/imagemn-escolhida-artigo-e1571255765939-1280x720.jpg) ;">
+        <p class="lq-title">O quão inteligente você é?</p>
+      </div>
     </div>
   </div>
 
 
   <div class="lq-containerQuizzes">
     <p>Todos os quizzes</p>
-    <div class="loadingscreen"></div>
+
+    <div class="lq-quizzesContainer">
+      <div class="loadingscreen"></div>
+      <!-- <div onclick="renderizarQuizz()" class="lq-quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url(https://www.istoedinheiro.com.br/wp-content/uploads/sites/17/2019/10/imagemn-escolhida-artigo-e1571255765939-1280x720.jpg) ;">
+        <p class="lq-title">O quão inteligente você é?</p>
+      </div>
+      <div class="lq-quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url(https://www.istoedinheiro.com.br/wp-content/uploads/sites/17/2019/10/imagemn-escolhida-artigo-e1571255765939-1280x720.jpg) ;">
+        <p class="lq-title">O quão inteligente você é?</p>
+      </div>
+      <div class="lq-quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url(https://www.istoedinheiro.com.br/wp-content/uploads/sites/17/2019/10/imagemn-escolhida-artigo-e1571255765939-1280x720.jpg) ;">
+        <p class="lq-title">O quão inteligente você é?</p>
+      </div>
+      <div class="lq-quizz" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url(https://www.istoedinheiro.com.br/wp-content/uploads/sites/17/2019/10/imagemn-escolhida-artigo-e1571255765939-1280x720.jpg) ;">
+        <p class="lq-title">O quão inteligente você é?</p>
+      </div> -->
+    </div>
   </div>
 
-  <script src="./js/1-lista-quizz.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="./js/1-lista-quizz.js"></script>
 </body>
 
 </html>
