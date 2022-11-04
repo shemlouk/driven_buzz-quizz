@@ -58,7 +58,7 @@ p {
 
 .lq-containerQUsuario {
     width: 100%;
-    height: 150px;
+    height: 189px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -146,14 +146,14 @@ p {
 }
 
 .lq-quizz {
-    width: 336px;
-    height: 189px;
+    width: 344px;
+    height: 215px;
     border-radius: 5px;
-    margin: 0px 10px 15px 0px;
+    margin: 0px 0px 10px 0px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    background-size: 344px 194px;
+    background-size: 356px 200px;
     background-repeat: no-repeat;
     background-color: black;
     cursor: pointer;
