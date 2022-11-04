@@ -1,7 +1,7 @@
 axios
   .get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes")
   .then((response) => {
-    const quizz = response.data[35];
+    const quizz = response.data[11];
     console.log(quizz);
 
     loadPage(quizz);
@@ -27,12 +27,7 @@ function loadQuestions(qts) {
 
   qts.forEach((obj) => {
     const question = createHtmlElement("li", ["question"]);
-    const title = createHtmlElement(
-      "p",
-      ["question__title", "lilac-background"],
-      obj.title
-    );
-
+    const title = createHtmlElement("p", ["question__title"], obj.title);
     title.setAttribute("style", `background-color:${obj.color}`);
 
     const answers = loadAnswers(obj.answers);
@@ -46,16 +41,17 @@ function loadQuestions(qts) {
 function loadAnswers(ans) {
   const answers = createHtmlElement("div", ["question__answers"]);
   const list = [];
-
   ans.forEach((obj) => {
+    const booleanString = obj.isCorrectAnswer === true ? "true" : "";
     const html = `<figure class="answer__image">
                     <img src="${obj.image}" alt="imagem da resposta" />
                   </figure>
                   <p class="answer__text">${obj.text}</p>`;
     const answer = createHtmlElement("div", ["answer"], html);
-    answer.setAttribute("data-answer", obj.isCorrectAnswer);
+    answer.setAttribute("data-answer", booleanString);
     list.push(answer);
   });
+  addSelectEvent(list);
   list.sort(() => {
     return Math.random() - 0.5;
   });
@@ -64,6 +60,32 @@ function loadAnswers(ans) {
   });
 
   return answers;
+}
+
+//======= CLICK EVENTS ========================================================
+
+function addSelectEvent(answers) {
+  answers.forEach((answer) => {
+    answer.addEventListener("click", (e) => {
+      const selectedAnswer = e.currentTarget;
+      selectAnswer(selectedAnswer);
+    });
+  });
+}
+
+function selectAnswer(answer) {
+  const otherAnswers = answer.parentNode.querySelectorAll(".answer");
+  const answerText = answer.querySelector(".answer__text");
+  const answerValue = answer.getAttribute("data-answer");
+  otherAnswers.forEach((answer) => {
+    answer.classList.add("opaque");
+  });
+  answer.classList.remove("opaque");
+  if (answerValue) {
+    answerText.classList.add("right-answer");
+  } else {
+    answerText.classList.add("wrong-answer");
+  }
 }
 
 function createHtmlElement(tag, classes, content) {
