@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/lista-quizzes.css" />
+  <link rel="stylesheet" href="./css/1-lista-quizz.css" />
 
   <title>Document</title>
 
@@ -19,7 +19,7 @@
 
   <div class="lq-containerQUsuario ">
     <p>Você não criou nenhum quizz ainda :(</p>
-    <button class="lq-criarquizzbutton" onclick="lqCriarQuizz()">Criar Quizz</button>
+    <button class="lq-criarquizzbutton" onclick="window.location.href='./3-criacao-quizz.html';">Criar Quizz</button>
   </div>
   <div class="lq-container lq-hidden">
     <div class="lq-containerUsuario ">
@@ -41,9 +41,10 @@
     <div class="loadingscreen"></div>
   </div>
 
-  <script src="./js/lista-quizzes.js"></script>
+  <script src="./js/1-lista-quizz.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
