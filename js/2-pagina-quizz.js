@@ -1,7 +1,7 @@
 axios
   .get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes")
   .then((response) => {
-    const quizz = response.data[11];
+    const quizz = response.data[3];
     console.log(quizz);
 
     loadPage(quizz);
@@ -12,7 +12,7 @@ function loadPage(obj) {
   loadQuestions(obj.questions);
 }
 
-//======= LOADING PAGE ========================================================
+//======= LOAD PAGE ===========================================================
 
 function loadBanner(text, imageUrl) {
   const image = document.querySelector('[data-quizz="image"]');
@@ -24,14 +24,11 @@ function loadBanner(text, imageUrl) {
 function loadQuestions(qts) {
   const questions = document.querySelector('[data-quizz="questions"]');
   questions.innerHTML = "";
-
   qts.forEach((obj) => {
     const question = createHtmlElement("li", ["question"]);
     const title = createHtmlElement("p", ["question__title"], obj.title);
     title.setAttribute("style", `background-color:${obj.color}`);
-
     const answers = loadAnswers(obj.answers);
-
     question.appendChild(title);
     question.appendChild(answers);
     questions.appendChild(question);
@@ -62,7 +59,7 @@ function loadAnswers(ans) {
   return answers;
 }
 
-//======= CLICK EVENTS ========================================================
+//======= SELECT EVENTS =======================================================
 
 function addSelectEvent(answers) {
   answers.forEach((answer) => {
@@ -74,19 +71,35 @@ function addSelectEvent(answers) {
 }
 
 function selectAnswer(answer) {
-  const otherAnswers = answer.parentNode.querySelectorAll(".answer");
-  const answerText = answer.querySelector(".answer__text");
-  const answerValue = answer.getAttribute("data-answer");
-  otherAnswers.forEach((answer) => {
-    answer.classList.add("opaque");
-  });
-  answer.classList.remove("opaque");
-  if (answerValue) {
-    answerText.classList.add("right-answer");
-  } else {
-    answerText.classList.add("wrong-answer");
+  const answersContainer = answer.parentNode;
+  const validation = answersContainer.getAttribute("data-answers");
+  if (!validation) {
+    const allAnswers = answersContainer.querySelectorAll(".answer");
+    allAnswers.forEach((ans) => {
+      const answerText = ans.querySelector(".answer__text");
+      const answerValue = ans.getAttribute("data-answer");
+      const style = answerValue ? "right-answer" : "wrong-answer";
+      answerText.classList.add(style);
+      if (ans === answer) return;
+      ans.classList.add("opaque");
+    });
+    answersContainer.setAttribute("data-answers", "locked");
+    setTimeout(() => {
+      scrollToNextQuestion(answer);
+    }, 2000);
   }
 }
+
+function scrollToNextQuestion(answer) {
+  const currentQuestion = answer.parentNode.parentNode;
+  const allQuestions = Array.from(document.querySelectorAll(".question"));
+  const currentIndex = allQuestions.indexOf(currentQuestion);
+  const index =
+    currentIndex === allQuestions.length - 1 ? currentIndex : currentIndex + 1;
+  allQuestions[index].scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+//======= GENERAL =============================================================
 
 function createHtmlElement(tag, classes, content) {
   const element = document.createElement(tag);
