@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BuzzQuizz</title>
     <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/pagina-quizz.css" />
+    <link rel="stylesheet" href="./css/2-pagina-quizz.css" />
   </head>
   <body>
     <header>
@@ -16,16 +16,16 @@
 
     <div class="quizz-header">
       <figure class="quizz-banner">
-        <img src="https://http.cat/411.jpg" alt="imagem do quiz" />
-        <h1 class="quizz-title">Título do Quizz</h1>
+        <img data-quizz="image" alt="imagem do quiz" />
+        <h1 data-quizz="title" class="quizz-title"></h1>
       </figure>
     </div>
 
-    <ul class="quizz-questions">
+    <ul data-quizz="questions" class="quizz-questions">
       <li class="question">
         <p class="question__title blue-background">Pergunta 1</p>
         <div class="question__answers">
-          <div class="answer">
+          <div data-quizz="answers" class="answer">
             <figure class="answer__image">
               <img src="https://http.cat/412.jpg" alt="imagem da resposta" />
             </figure>
@@ -83,7 +83,7 @@
       </li>
     </ul>
 
-    <div class="quizz-result">
+    <div class="quizz-result hidden">
       <div class="result">
         <p class="result__title">Resultado</p>
         <div>
@@ -101,10 +101,11 @@
 
       <div class="options">
         <button class="restart">Reiniciar Quizz</button>
-        <a class="return" href="./lista-quizzes.html">Voltar pra home</a>
+        <a class="return" href="./1-lista-quizz.html">Voltar pra home</a>
       </div>
     </div>
 
-    <script src="./js/pagina-quizz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/2-pagina-quizz.js"></script>
   </body>
 </html>
