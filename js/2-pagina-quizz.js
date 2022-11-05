@@ -27,14 +27,30 @@ function loadQuestions(qts) {
   const questions = document.querySelector('[data-quizz="questions"]');
   questions.innerHTML = "";
   qts.forEach((obj) => {
+    const constrast = adjustContrastFor(obj.color);
     const question = createHtmlElement("li", ["question"]);
     const title = createHtmlElement("p", ["question__title"], obj.title);
-    title.setAttribute("style", `background-color:${obj.color}`);
+    title.setAttribute(
+      "style",
+      `background-color:${obj.color}; color: ${constrast};`
+    );
     const answers = loadAnswers(obj.answers);
     question.appendChild(title);
     question.appendChild(answers);
     questions.appendChild(question);
   });
+}
+
+function adjustContrastFor(color) {
+  const hex = color.substring(1);
+  let colors = hex.match(/(..)/g);
+  colors = colors.map((code) => {
+    return parseInt(code, 16);
+  });
+  const sumColors = colors.reduce((sum, element) => sum + element, 0);
+  const ratio = (sumColors / 255) * 3;
+  const newColor = ratio <= 0.5 ? "#FFFFFF" : "#000000";
+  return newColor;
 }
 
 function loadAnswers(ans) {
