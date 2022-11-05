@@ -104,7 +104,7 @@ function selectAnswer(answer) {
     answersContainer.setAttribute("data-answers", "locked");
     setTimeout(() => {
       scrollToNextQuestion(answer);
-    }, 2000);
+    }, 1500);
   }
 }
 

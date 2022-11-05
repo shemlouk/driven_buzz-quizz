@@ -158,6 +158,7 @@ p {
     background-color: black;
     cursor: pointer;
     word-break: break-word;
+    transition: .2s ease-out;
 }
 
 .lq-quizz p {
@@ -168,3 +169,6 @@ p {
     margin: 22px;
 }
 
+.lq-quizz:hover {
+    transform: scale(1.02);
+  }
