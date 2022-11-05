@@ -1,11 +1,13 @@
-axios
-  .get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes")
-  .then((response) => {
-    const quizz = response.data[3];
-    console.log(quizz);
+// axios
+//   .get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes")
+//   .then((response) => {
+//     const quizz = response.data[3];
+//     });
+  const local = localStorage.getItem("StringSelectedQuizz");
+  const quizz = JSON.parse(local);
 
+    console.log(quizz);
     loadPage(quizz);
-  });
 
 function loadPage(obj) {
   loadBanner(obj.title, String(obj.image));
