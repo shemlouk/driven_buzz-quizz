@@ -1,8 +1,8 @@
 const restartButton = document.querySelector('[data-quizz="restart"]');
-const rightAnswerSound = new Audio("../assets/right-answer.mp3");
-const wrongAnswerSound = new Audio("../assets/wrong-answer.mp3");
+const rightAnswerSound = new Audio("./assets/right-answer.mp3");
+const wrongAnswerSound = new Audio("./assets/wrong-answer.mp3");
 wrongAnswerSound.volume = 0.4;
-const clickSound = new Audio("../assets/click-sound.mp3");
+const clickSound = new Audio("./assets/click-sound.mp3");
 const quizz = getQuizz();
 const selectedAnswers = [];
 
