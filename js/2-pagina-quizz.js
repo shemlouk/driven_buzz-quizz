@@ -1,20 +1,44 @@
-// axios
-//   .get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes")
-//   .then((response) => {
-//     const quizz = response.data[3];
-//     });
-  const local = localStorage.getItem("StringSelectedQuizz");
-  const quizz = JSON.parse(local);
+const restartButton = document.querySelector('[data-quizz="restart"]');
+const rightAnswerSound = new Audio("./assets/right-answer.mp3");
+const wrongAnswerSound = new Audio("./assets/wrong-answer.mp3");
+wrongAnswerSound.volume = 0.4;
+const clickSound = new Audio("./assets/click-sound.mp3");
+const quizz = getQuizz();
+const selectedAnswers = [];
 
-    console.log(quizz);
-    loadPage(quizz);
+//======= START PAGE ==========================================================
+
+restartButton.addEventListener("click", () => {
+  clickSound.play();
+  const result = document.querySelector(".quizz-result");
+  const firstQuestion = document.querySelector(".question");
+  result.classList.add("disappear");
+  setTimeout(() => {
+    firstQuestion.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 200);
+  setTimeout(() => {
+    resetQuizz();
+    result.classList.remove("disappear");
+  }, 500);
+});
+
+loadPage(quizz);
+
+//======= GET QUIZZ ===========================================================
+
+function getQuizz() {
+  const local = localStorage.getItem("StringSelectedQuizz");
+  const obj = JSON.parse(local);
+  console.log(obj);
+  return obj;
+}
+
+//======= LOAD PAGE ===========================================================
 
 function loadPage(obj) {
   loadBanner(obj.title, String(obj.image));
   loadQuestions(obj.questions);
 }
-
-//======= LOAD PAGE ===========================================================
 
 function loadBanner(text, imageUrl) {
   const image = document.querySelector('[data-quizz="image"]');
@@ -48,7 +72,7 @@ function adjustContrastFor(color) {
     return parseInt(code, 16);
   });
   const sumColors = colors.reduce((sum, element) => sum + element, 0);
-  const ratio = (sumColors / 255) * 3;
+  const ratio = sumColors / (255 * 3);
   const newColor = ratio <= 0.5 ? "#FFFFFF" : "#000000";
   return newColor;
 }
@@ -77,7 +101,7 @@ function loadAnswers(ans) {
   return answers;
 }
 
-//======= SELECT EVENTS =======================================================
+//======= SELECT ANSWER =======================================================
 
 function addSelectEvent(answers) {
   answers.forEach((answer) => {
@@ -90,31 +114,110 @@ function addSelectEvent(answers) {
 
 function selectAnswer(answer) {
   const answersContainer = answer.parentNode;
-  const validation = answersContainer.getAttribute("data-answers");
+  const validation = answersContainer.getAttribute("data-disable");
   if (!validation) {
+    selectedAnswers.push(answer);
+    answer.classList.add("grow");
+    if (verifiesIfFinished()) {
+      finishQuizz();
+    }
     const allAnswers = answersContainer.querySelectorAll(".answer");
     allAnswers.forEach((ans) => {
+      ans.classList.add("noHover");
       const answerText = ans.querySelector(".answer__text");
       const answerValue = ans.getAttribute("data-answer");
       const style = answerValue ? "right-answer" : "wrong-answer";
       answerText.classList.add(style);
-      if (ans === answer) return;
+      if (ans === answer) {
+        answersContainer.parentNode.classList.add("outline-" + style);
+        if (style === "right-answer") {
+          rightAnswerSound.play();
+        } else {
+          wrongAnswerSound.play();
+        }
+        return;
+      }
       ans.classList.add("opaque");
     });
-    answersContainer.setAttribute("data-answers", "locked");
+    answersContainer.setAttribute("data-disable", "true");
     setTimeout(() => {
       scrollToNextQuestion(answer);
     }, 1500);
   }
 }
 
+function verifiesIfFinished() {
+  const qtyQuestions = quizz.questions.length;
+  return qtyQuestions === selectedAnswers.length;
+}
+
 function scrollToNextQuestion(answer) {
   const currentQuestion = answer.parentNode.parentNode;
   const allQuestions = Array.from(document.querySelectorAll(".question"));
   const currentIndex = allQuestions.indexOf(currentQuestion);
-  const index =
-    currentIndex === allQuestions.length - 1 ? currentIndex : currentIndex + 1;
+  if (currentIndex === allQuestions.length - 1) return;
+  const index = currentIndex + 1;
   allQuestions[index].scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+//======= FINISH QUIZZ ========================================================
+
+function finishQuizz() {
+  const result = document.querySelector('[data-quizz="result"]');
+  result.parentElement.classList.remove("hidden");
+  setTimeout(() => {
+    result.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 2000);
+  loadResult(result);
+}
+
+function loadResult(resultContainer) {
+  const score = getScore();
+  const level = getResultLevel(quizz.levels, score);
+  const scoreText = `${score}% de acerto: `;
+  const resultElements = resultContainer.querySelectorAll("[data-result]");
+  resultElements.forEach((element) => {
+    const attribute = element.getAttribute("data-result");
+    switch (attribute) {
+      case "image":
+        element.setAttribute("src", level.image);
+        break;
+      case "title":
+        element.innerHTML = scoreText + level.title;
+        break;
+      case "text":
+        element.innerHTML = level.text;
+        break;
+    }
+  });
+}
+
+function getResultLevel(levels, score) {
+  let resultLevel;
+  levels.forEach((level) => {
+    if (level.minValue <= score) resultLevel = level;
+  });
+  return resultLevel;
+}
+
+function getScore() {
+  const rightAnswers = selectedAnswers.filter(
+    (answer) => answer.getAttribute(["data-answer"]) === "true"
+  ).length;
+  const score = Math.round((rightAnswers / quizz.questions.length) * 100);
+  return score;
+}
+
+//======= RESET ===============================================================
+
+function resetQuizz() {
+  selectedAnswers.splice(0, selectedAnswers.length);
+  loadPage(quizz);
+  const result = document.querySelector('[data-quizz="result"]');
+  result.parentElement.classList.add("hidden");
 }
 
 //======= GENERAL =============================================================

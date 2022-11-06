@@ -23,24 +23,19 @@
 
     <ul data-quizz="questions" class="quizz-questions"></ul>
 
-    <div data-quizz="final" class="quizz-result hidden">
+    <div class="quizz-result hidden">
       <div data-quizz="result" class="result">
-        <p class="result__title">Resultado</p>
+        <p data-result="title" class="result__title"></p>
         <div>
           <div class="result__image">
-            <img src="https://http.cat/412.jpg" alt="imagem do resultado" />
+            <img data-result="image" src="" alt="imagem do resultado" />
           </div>
-          <p class="result__text">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni
-            ratione totam dicta culpa esse ab, eaque quos, illum molestias amet
-            quibusdam praesentium dolores temporibus quod harum! Ratione nobis
-            ipsa architecto.
-          </p>
+          <p data-result="text" class="result__text"></p>
         </div>
       </div>
 
       <div class="options">
-        <button class="restart">Reiniciar Quizz</button>
+        <button data-quizz="restart" class="restart">Reiniciar Quizz</button>
         <a class="return" href="./index.html">Voltar pra home</a>
       </div>
     </div>
