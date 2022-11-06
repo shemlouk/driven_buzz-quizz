@@ -1,8 +1,10 @@
+let urlBase = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 let tituloQuizz = "";
 let URLImagemQuizz = "";
 let questions = [];
 let numeroPerguntas = 0;
 let numeroNiveis = 0;
+let levels = [];
 
 document.querySelector(".cq-button-comeco").onclick = function () {
   if (validaInputInicio()) {
@@ -233,6 +235,7 @@ function salvarPerguntas() {
 }
 
 function validaPerguntas() {
+  questions = [];
   let perguntasValidas = 0;
   for (let i = 1; i <= numeroPerguntas; i++) {
     let question = {
@@ -510,12 +513,10 @@ function validaTituloUrlPergunta(num, question) {
 function renderizaNiveis() {
   if (numeroNiveis && numeroNiveis >= 2) {
     let niveisHTML = "";
-    console.log(numeroNiveis);
     for (let i = 0; i < numeroNiveis; i++) {
-      console.log(i);
       if (i === 0) {
         niveisHTML += `<p class="cq-titulo-pagina">Agora, decida os níveis</p>
-                        <div class="cq-container-central cq-pergunta-1">
+                        <div class="cq-container-central cq-nivel-1">
                           <div class="cq-container-inputs">
                             <p class="cq-titulo-p">Nível 1</p>
                             <div class="cq-caixa-input-individual">
@@ -559,6 +560,133 @@ function renderizaNiveis() {
   }
 }
 
-function salvarNiveis() {}
+function salvarNiveis() {
+  levels = [];
+  for (let i = 0; i < numeroNiveis; i++) {
+    let level = {
+      title: null,
+      image: null,
+      text: null,
+      minValue: null,
+    };
+    validaNiveis(i + 1, level);
+    if (
+      level.title != null &&
+      level.image != null &&
+      level.text != null &&
+      level.minValue != null
+    ) {
+      levels.push(level);
+    }
+  }
+  let quizz = {
+    title: tituloQuizz,
+    image: URLImagemQuizz,
+    questions: questions,
+    levels: levels,
+  };
+  axios
+    .post(`${urlBase}quizzes`, {
+      title: tituloQuizz,
+      image: URLImagemQuizz,
+      questions: questions,
+      levels: levels,
+    })
+    .then((response) => {
+      let localIds = localStorage.getItem("quizzes-id");
+      let quizzesIds = localIds ? JSON.parse(localIds) : [];
+      quizzesIds.push(response.data.id);
+      localStorage.setItem("quizzes-id", JSON.stringify(quizzesIds));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
-function renderNivel(classNameContent, niveisNumber, icon) {}
+function renderNivel(classNameContent, niveisNumber, icon) {
+  icon.classList.add("cq-escondido");
+  const content = document.querySelector(`.${classNameContent}`);
+  let nivelHTML = ` <div class="cq-container-central cq-nivel-${niveisNumber}">
+                      <div class="cq-container-inputs">
+                        <div class="cq-caixa-input-individual">
+                          <input class="cq-input-titulo-nivel-${niveisNumber}" type="text" placeholder="Título do nível" />
+                          <div class="cq-validacao-titulo-nivel-${niveisNumber} cq-validacao"></div>
+                        </div>
+                        <div class="cq-caixa-input-individual">
+                          <input class="cq-input-porcentagem-nivel-${niveisNumber}" type="text" placeholder="% de acerto mínima" />
+                          <div class="cq-validacao-porcentagem-nivel-${niveisNumber} cq-validacao"></div>
+                        </div>
+                        <div class="cq-caixa-input-individual">
+                          <input class="cq-input-url-nivel-${niveisNumber}" type="text" placeholder="URL da imagem do nível" />
+                          <div class="cq-validacao-url-nivel-${niveisNumber} cq-validacao"></div>
+                        </div>
+                        <div class="cq-caixa-input-individual">
+                          <textarea class="cq-input-descricao-nivel-${niveisNumber}" rows="3" placeholder="Descrição do nível" > </textarea>
+                          <div class="cq-validacao-descricao-nivel-${niveisNumber} cq-validacao"></div>
+                        </div>
+                      </div>
+                    </div>`;
+  content.innerHTML = nivelHTML;
+}
+
+function validaNiveis(num, level) {
+  const titulo = document.querySelector(`.cq-input-titulo-nivel-${num}`);
+  const porcentagem = document.querySelector(
+    `.cq-input-porcentagem-nivel-${num}`
+  );
+  const url = document.querySelector(`.cq-input-url-nivel-${num}`);
+  const descricao = document.querySelector(`.cq-input-descricao-nivel-${num}`);
+  if (titulo) {
+    if (!titulo.value || titulo.value.length < 10) {
+      titulo.classList.add("cq-input-validate");
+      document.querySelector(`.cq-validacao-titulo-nivel-${num}`).innerHTML =
+        "Deve digitar um título valido!";
+    } else {
+      level.title = titulo.value;
+      titulo.classList.remove("cq-input-validate");
+      document.querySelector(`.cq-validacao-titulo-nivel-${num}`).innerHTML =
+        "";
+    }
+  }
+  if (porcentagem) {
+    if (
+      !porcentagem.value ||
+      porcentagem.value < 0 ||
+      porcentagem.value > 100
+    ) {
+      porcentagem.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-porcentagem-nivel-${num}`
+      ).innerHTML = "Deve digitar um valor entre 0 - 100";
+    } else {
+      level.minValue = Number(porcentagem.value);
+      porcentagem.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-porcentagem-nivel-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (url) {
+    if (!isURL(url.value)) {
+      url.classList.add("cq-input-validate");
+      document.querySelector(`.cq-validacao-url-nivel-${num}`).innerHTML =
+        "Deve digitar uma URL valida!";
+    } else {
+      level.image = url.value;
+      url.classList.remove("cq-input-validate");
+      document.querySelector(`.cq-validacao-url-nivel-${num}`).innerHTML = "";
+    }
+  }
+  if (descricao) {
+    if (!descricao.value || descricao.value < 30) {
+      descricao.classList.add("cq-input-validate");
+      document.querySelector(`.cq-validacao-descricao-nivel-${num}`).innerHTML =
+        "Deve digitar uma descrição com pelo menos 30 caracteres!";
+    } else {
+      level.text = descricao.value;
+      descricao.classList.remove("cq-input-validate");
+      document.querySelector(`.cq-validacao-descricao-nivel-${num}`).innerHTML =
+        "";
+    }
+  }
+}
