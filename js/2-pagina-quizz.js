@@ -50,9 +50,10 @@ function loadBanner(text, imageUrl) {
 function loadQuestions(qts) {
   const questions = document.querySelector('[data-quizz="questions"]');
   questions.innerHTML = "";
-  qts.forEach((obj) => {
+  qts.forEach((obj, index) => {
     const constrast = adjustContrastFor(obj.color);
     const question = createHtmlElement("li", ["question"]);
+    if (index === 0) question.classList.add("focus");
     const title = createHtmlElement("p", ["question__title"], obj.title);
     title.setAttribute(
       "style",
@@ -114,10 +115,13 @@ function addSelectEvent(answers) {
 
 function selectAnswer(answer) {
   const answersContainer = answer.parentNode;
-  const validation = answersContainer.getAttribute("data-disable");
-  if (!validation) {
+  const validation =
+    answersContainer.getAttribute("data-disable") !== "" &&
+    answersContainer.parentNode.classList.contains("focus");
+  if (validation) {
     selectedAnswers.push(answer);
     answer.classList.add("grow");
+    answersContainer.classList.add("noHover");
     if (verifiesIfFinished()) {
       finishQuizz();
     }
@@ -153,10 +157,12 @@ function verifiesIfFinished() {
 
 function scrollToNextQuestion(answer) {
   const currentQuestion = answer.parentNode.parentNode;
+  currentQuestion.classList.remove("focus");
   const allQuestions = Array.from(document.querySelectorAll(".question"));
   const currentIndex = allQuestions.indexOf(currentQuestion);
   if (currentIndex === allQuestions.length - 1) return;
   const index = currentIndex + 1;
+  allQuestions[index].classList.add("focus");
   allQuestions[index].scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
@@ -164,7 +170,11 @@ function scrollToNextQuestion(answer) {
 
 function finishQuizz() {
   const result = document.querySelector('[data-quizz="result"]');
+  result.parentElement.classList.add("appear");
   result.parentElement.classList.remove("hidden");
+  setTimeout(() => {
+    result.parentElement.classList.remove("appear");
+  }, 1000);
   setTimeout(() => {
     result.scrollIntoView({
       behavior: "smooth",
