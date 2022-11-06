@@ -5,6 +5,7 @@ let questions = [];
 let numeroPerguntas = 0;
 let numeroNiveis = 0;
 let levels = [];
+let quizzclicado = null;
 
 document.querySelector(".cq-button-comeco").onclick = function () {
   if (validaInputInicio()) {
@@ -488,11 +489,7 @@ function validaTituloUrlPergunta(num, question) {
     }
   }
   if (corFundo) {
-    if (
-      !corFundo.value ||
-      corFundo.value[0] !== "#" ||
-      corFundo.value.length !== 7
-    ) {
+    if (!corFundo.value || !isHexadecimal(corFundo.value)) {
       URLPergunta = false;
       corFundo.classList.add("cq-input-validate");
       document.querySelector(
@@ -561,6 +558,7 @@ function renderizaNiveis() {
 }
 
 function salvarNiveis() {
+  console.log();
   levels = [];
   for (let i = 0; i < numeroNiveis; i++) {
     let level = {
@@ -579,12 +577,6 @@ function salvarNiveis() {
       levels.push(level);
     }
   }
-  let quizz = {
-    title: tituloQuizz,
-    image: URLImagemQuizz,
-    questions: questions,
-    levels: levels,
-  };
   axios
     .post(`${urlBase}quizzes`, {
       title: tituloQuizz,
@@ -597,6 +589,22 @@ function salvarNiveis() {
       let quizzesIds = localIds ? JSON.parse(localIds) : [];
       quizzesIds.push(response.data.id);
       localStorage.setItem("quizzes-id", JSON.stringify(quizzesIds));
+      document.querySelector(".cq-niveis-quizz").classList.add("cq-escondido");
+      let sucessoHTML = ` <p class="cq-titulo-pagina">Seu quizz está pronto!</p>
+                          <div class="cq-container-image-success">
+                            <img class="cq-image-success" src="${URLImagemQuizz}" alt="" />
+                            <p>${tituloQuizz}</>
+                          </div>
+                          <button type="button" class="cq-button cq-button-acessar-quizz" onclick="direcionaParaVisualizacao(${response.data.id})">
+                            Acessar Quizz
+                          </button>
+                          <a class="cq-home" href="./index.html">
+                            Voltar pra home
+                          </a>
+                          `;
+      const sucesso = document.querySelector(".cq-sucesso-quizz");
+      sucesso.innerHTML = sucessoHTML;
+      sucesso.classList.remove("cq-escondido");
     })
     .catch((error) => {
       console.log(error);
@@ -689,4 +697,25 @@ function validaNiveis(num, level) {
         "";
     }
   }
+}
+
+function isHexadecimal(char) {
+  var expression = /^#[0-9A-F]{6}$/i;
+  var regex = new RegExp(expression);
+  return char.match(regex);
+}
+
+function direcionaParaVisualizacao(id) {
+  axios
+    .get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`)
+    .then((response) => {
+      console.log(response);
+      const StringSelectedQuizz = JSON.stringify(response.data);
+      localStorage.setItem("StringSelectedQuizz", StringSelectedQuizz);
+
+      window.location.href = "./2-pagina-quizz.html";
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }

@@ -153,6 +153,15 @@ body {
   box-sizing: border-box;
 }
 
+.cq-sucesso-quizz {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
 .cq-titulo-p {
   font-weight: 700;
   font-size: 20px;
@@ -163,6 +172,43 @@ body {
 
 ion-icon {
   font-size: 20px;
+}
+
+.cq-container-image-success {
+  margin-top: 40px;
+  position: relative;
+}
+
+.cq-container-image-success p {
+  width: 320px;
+  height: 55px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 25px;
+  color: #ffffff;
+  word-break: break-all;
+}
+
+.cq-image-success {
+  width: 500px;
+  height: 266px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 65.62%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  border-radius: 5px;
+}
+
+.cq-home {
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 25px;
+  color: #818181;
 }
 
 .cq-escondido {
