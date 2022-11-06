@@ -1,11 +1,25 @@
 const restartButton = document.querySelector('[data-quizz="restart"]');
+const rightAnswerSound = new Audio("../assets/right-answer.mp3");
+const wrongAnswerSound = new Audio("../assets/wrong-answer.mp3");
+wrongAnswerSound.volume = 0.4;
+const clickSound = new Audio("../assets/click-sound.mp3");
 const quizz = getQuizz();
 const selectedAnswers = [];
 
 //======= START PAGE ==========================================================
 
 restartButton.addEventListener("click", () => {
-  resetQuizz();
+  clickSound.play();
+  const result = document.querySelector(".quizz-result");
+  const firstQuestion = document.querySelector(".question");
+  result.classList.add("disappear");
+  setTimeout(() => {
+    firstQuestion.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 200);
+  setTimeout(() => {
+    resetQuizz();
+    result.classList.remove("disappear");
+  }, 500);
 });
 
 loadPage(quizz);
@@ -58,7 +72,7 @@ function adjustContrastFor(color) {
     return parseInt(code, 16);
   });
   const sumColors = colors.reduce((sum, element) => sum + element, 0);
-  const ratio = (sumColors / 255) * 3;
+  const ratio = sumColors / (255 * 3);
   const newColor = ratio <= 0.5 ? "#FFFFFF" : "#000000";
   return newColor;
 }
@@ -100,22 +114,32 @@ function addSelectEvent(answers) {
 
 function selectAnswer(answer) {
   const answersContainer = answer.parentNode;
-  const validation = answersContainer.getAttribute("data-answers");
+  const validation = answersContainer.getAttribute("data-disable");
   if (!validation) {
     selectedAnswers.push(answer);
+    answer.classList.add("grow");
     if (verifiesIfFinished()) {
       finishQuizz();
     }
     const allAnswers = answersContainer.querySelectorAll(".answer");
     allAnswers.forEach((ans) => {
+      ans.classList.add("noHover");
       const answerText = ans.querySelector(".answer__text");
       const answerValue = ans.getAttribute("data-answer");
       const style = answerValue ? "right-answer" : "wrong-answer";
       answerText.classList.add(style);
-      if (ans === answer) return;
+      if (ans === answer) {
+        answersContainer.parentNode.classList.add("outline-" + style);
+        if (style === "right-answer") {
+          rightAnswerSound.play();
+        } else {
+          wrongAnswerSound.play();
+        }
+        return;
+      }
       ans.classList.add("opaque");
     });
-    answersContainer.setAttribute("data-answers", "locked");
+    answersContainer.setAttribute("data-disable", "true");
     setTimeout(() => {
       scrollToNextQuestion(answer);
     }, 1500);
@@ -192,8 +216,6 @@ function getScore() {
 function resetQuizz() {
   selectedAnswers.splice(0, selectedAnswers.length);
   loadPage(quizz);
-  const firstQuestion = document.querySelector(".question");
-  firstQuestion.scrollIntoView({ behavior: "smooth", block: "center" });
   const result = document.querySelector('[data-quizz="result"]');
   result.parentElement.classList.add("hidden");
 }
