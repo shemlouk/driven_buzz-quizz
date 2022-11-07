@@ -155,7 +155,9 @@ function renderizaPerguntas() {
                                 i + 1
                               }', ${i + 1}, this)"></ion-icon>
                             </div>
-                            <div class="cq-content-pergunta-${i + 1}"></div>
+                            <div class="cq-container-central cq-content-pergunta-${
+                              i + 1
+                            }"></div>
                           </div>`;
       }
     }
@@ -171,8 +173,7 @@ function renderizaPerguntas() {
 function renderPergunta(classNameContent, perguntaNumber, icon) {
   icon.classList.add("cq-escondido");
   const content = document.querySelector(`.${classNameContent}`);
-  let contentHTML = `<div class="cq-container-central cq-pergunta-${perguntaNumber}">
-                      <div class="cq-container-inputs">
+  let contentHTML = ` <div class="cq-container-inputs">
                         <div class="cq-caixa-input-individual">
                           <input class="cq-input-texto-pergunta-${perguntaNumber}" type="text" placeholder="Texto da pergunta" />
                           <div class="cq-validacao-texto-pergunta-${perguntaNumber} cq-validacao"></div>
@@ -223,8 +224,7 @@ function renderPergunta(classNameContent, perguntaNumber, icon) {
                           <input class="cq-input-incorreta3-url-pergunta-${perguntaNumber}" type="text" placeholder="URL da imagem 3" />
                           <div class="cq-validacao-incorreta3-url-pergunta-${perguntaNumber} cq-validacao"></div>
                         </div>
-                      </div>
-                    </div>`;
+                      </div>`;
   content.innerHTML = contentHTML;
 }
 
@@ -611,7 +611,9 @@ function renderizaNiveis() {
                             i + 1
                           }', ${i + 1}, this)"></ion-icon>
                         </div>
-                        <div class="cq-content-nivel-${i + 1}"></div>
+                        <div class="cq-container-central cq-content-nivel-${
+                          i + 1
+                        }"></div>
                       </div>`;
       }
     }
@@ -703,8 +705,7 @@ function salvarNiveis() {
 function renderNivel(classNameContent, niveisNumber, icon) {
   icon.classList.add("cq-escondido");
   const content = document.querySelector(`.${classNameContent}`);
-  let nivelHTML = ` <div class="cq-container-central cq-nivel-${niveisNumber}">
-                      <div class="cq-container-inputs">
+  let nivelHTML = `   <div class="cq-container-inputs">
                         <div class="cq-caixa-input-individual">
                           <input class="cq-input-titulo-nivel-${niveisNumber}" type="text" placeholder="Título do nível" />
                           <div class="cq-validacao-titulo-nivel-${niveisNumber} cq-validacao"></div>
@@ -721,8 +722,7 @@ function renderNivel(classNameContent, niveisNumber, icon) {
                           <textarea class="cq-input-descricao-nivel-${niveisNumber}" rows="3" placeholder="Descrição do nível" > </textarea>
                           <div class="cq-validacao-descricao-nivel-${niveisNumber} cq-validacao"></div>
                         </div>
-                      </div>
-                    </div>`;
+                      </div>`;
   content.innerHTML = nivelHTML;
 }
 
