@@ -236,6 +236,15 @@ function salvarPerguntas() {
 }
 
 function validaPerguntas() {
+  const buttonsNãoClicados = document.querySelectorAll(
+    ".cq-container-pre-perguntas ion-icon"
+  );
+  for (let i = 0; i < buttonsNãoClicados.length; i++) {
+    let listClass = Array.from(buttonsNãoClicados[i].classList);
+    if (!listClass.includes("cq-escondido")) {
+      buttonsNãoClicados[i].click();
+    }
+  }
   questions = [];
   let perguntasValidas = 0;
   for (let i = 1; i <= numeroPerguntas; i++) {
@@ -244,11 +253,18 @@ function validaPerguntas() {
       color: null,
       answers: [],
     };
-    const tituloPergunta = validaTituloUrlPergunta(i, question);
-    const respostaCorreta = validaRespostaCorreta(i, question);
-    let primeiraRespostaIncorreta = validaPrimeiraIncorreta(i, question);
-    let segundaRespostaIncorreta = validaSegundaIncorreta(i, question);
-    let terceiraRespostaIncorreta = validaTerceiraIncorreta(i, question);
+    validaTituloUrlPergunta(i, question);
+    validaRespostaCorreta(i, question);
+    const primeiraRespostaIncorreta = validaPrimeiraIncorreta(i, question);
+    const segundaRespostaIncorreta = validaSegundaIncorreta(i, question);
+    const terceiraRespostaIncorreta = validaTerceiraIncorreta(i, question);
+    if (
+      !primeiraRespostaIncorreta &&
+      !segundaRespostaIncorreta &&
+      !terceiraRespostaIncorreta
+    ) {
+      errorRespostasIncorretas(i);
+    }
     if (
       question.title != null &&
       question.color != null &&
@@ -259,6 +275,105 @@ function validaPerguntas() {
     }
   }
   return Number(perguntasValidas) === Number(numeroPerguntas) ? true : false;
+}
+
+function errorRespostasIncorretas(num) {
+  const texto1 = document.querySelector(
+    `.cq-input-incorreta1-text-pergunta-${num}`
+  );
+  const url1 = document.querySelector(
+    `.cq-input-incorreta1-url-pergunta-${num}`
+  );
+  const texto2 = document.querySelector(
+    `.cq-input-incorreta2-text-pergunta-${num}`
+  );
+  const url2 = document.querySelector(
+    `.cq-input-incorreta2-url-pergunta-${num}`
+  );
+  const texto3 = document.querySelector(
+    `.cq-input-incorreta3-text-pergunta-${num}`
+  );
+  const url3 = document.querySelector(
+    `.cq-input-incorreta3-url-pergunta-${num}`
+  );
+  if (texto1) {
+    if (!texto1.value || texto1.value.length === 0) {
+      texto1.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta1-text-pergunta-${num}`
+      ).innerHTML = "Deve digitar pelo menos uma resposta incorreta!";
+    } else {
+      texto1.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta1-text-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (url1) {
+    if (!isURL(url1.value)) {
+      url1.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta1-url-pergunta-${num}`
+      ).innerHTML = "Deve digitar uma URL valida!";
+    } else {
+      url1.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta1-url-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (texto2) {
+    if (!texto2.value || texto2.value.length === 0) {
+      texto2.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta2-text-pergunta-${num}`
+      ).innerHTML = "Deve digitar pelo menos uma resposta incorreta!";
+    } else {
+      texto2.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta2-text-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (url2) {
+    if (!isURL(url2.value)) {
+      url2.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta2-url-pergunta-${num}`
+      ).innerHTML = "Deve digitar uma URL valida!";
+    } else {
+      url2.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta2-url-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (texto3) {
+    if (!texto3.value || texto3.value.length === 0) {
+      texto3.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta3-text-pergunta-${num}`
+      ).innerHTML = "Deve digitar pelo menos uma resposta incorreta!";
+    } else {
+      texto3.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta3-text-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
+  if (url3) {
+    if (!isURL(url3.value)) {
+      url3.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta3-url-pergunta-${num}`
+      ).innerHTML = "Deve digitar uma URL valida!";
+    } else {
+      url3.classList.remove("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-incorreta3-url-pergunta-${num}`
+      ).innerHTML = "";
+    }
+  }
 }
 
 function validaTerceiraIncorreta(num, question) {
@@ -278,33 +393,17 @@ function validaTerceiraIncorreta(num, question) {
   if (texto) {
     if (!texto.value || texto.value.length === 0) {
       textoRespostaIncorreta = false;
-      texto.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta3-text-pergunta-${num}`
-      ).innerHTML = "Deve digitar um texto valido!";
     } else {
       textoRespostaIncorreta = true;
       answer.text = texto.value;
-      texto.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta3-text-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (url) {
     if (!isURL(url.value)) {
       URLRespostaIncorreta = false;
-      url.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta3-url-pergunta-${num}`
-      ).innerHTML = "Deve digitar uma URL valida!";
     } else {
       URLRespostaIncorreta = true;
       answer.image = url.value;
-      url.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta3-url-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (textoRespostaIncorreta && URLRespostaIncorreta) {
@@ -330,33 +429,17 @@ function validaSegundaIncorreta(num, question) {
   if (texto) {
     if (!texto.value || texto.value.length === 0) {
       textoRespostaIncorreta = false;
-      texto.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta2-text-pergunta-${num}`
-      ).innerHTML = "Deve digitar um texto valido!";
     } else {
       textoRespostaIncorreta = true;
       answer.text = texto.value;
-      texto.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta2-text-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (url) {
     if (!isURL(url.value)) {
       URLRespostaIncorreta = false;
-      url.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta2-url-pergunta-${num}`
-      ).innerHTML = "Deve digitar uma URL valida!";
     } else {
       URLRespostaIncorreta = true;
       answer.image = url.value;
-      url.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta2-url-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (textoRespostaIncorreta && URLRespostaIncorreta) {
@@ -382,33 +465,17 @@ function validaPrimeiraIncorreta(num, question) {
   if (texto) {
     if (!texto.value || texto.value.length === 0) {
       textoRespostaIncorreta = false;
-      texto.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta1-text-pergunta-${num}`
-      ).innerHTML = "Deve digitar um texto valido!";
     } else {
       textoRespostaIncorreta = true;
       answer.text = texto.value;
-      texto.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta1-text-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (url) {
     if (!isURL(url.value)) {
       URLRespostaIncorreta = false;
-      url.classList.add("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta1-url-pergunta-${num}`
-      ).innerHTML = "Deve digitar uma URL valida!";
     } else {
       URLRespostaIncorreta = true;
       answer.image = url.value;
-      url.classList.remove("cq-input-validate");
-      document.querySelector(
-        `.cq-validacao-incorreta1-url-pergunta-${num}`
-      ).innerHTML = "";
     }
   }
   if (textoRespostaIncorreta && URLRespostaIncorreta) {
@@ -558,7 +625,15 @@ function renderizaNiveis() {
 }
 
 function salvarNiveis() {
-  console.log();
+  const buttonsNãoClicados = document.querySelectorAll(
+    ".cq-container-pre-niveis ion-icon"
+  );
+  for (let i = 0; i < buttonsNãoClicados.length; i++) {
+    let listClass = Array.from(buttonsNãoClicados[i].classList);
+    if (!listClass.includes("cq-escondido")) {
+      buttonsNãoClicados[i].click();
+    }
+  }
   levels = [];
   for (let i = 0; i < numeroNiveis; i++) {
     let level = {
@@ -577,38 +652,52 @@ function salvarNiveis() {
       levels.push(level);
     }
   }
-  axios
-    .post(`${urlBase}quizzes`, {
-      title: tituloQuizz,
-      image: URLImagemQuizz,
-      questions: questions,
-      levels: levels,
-    })
-    .then((response) => {
-      let localIds = localStorage.getItem("quizzes-id");
-      let quizzesIds = localIds ? JSON.parse(localIds) : [];
-      quizzesIds.push(response.data.id);
-      localStorage.setItem("quizzes-id", JSON.stringify(quizzesIds));
-      document.querySelector(".cq-niveis-quizz").classList.add("cq-escondido");
-      let sucessoHTML = ` <p class="cq-titulo-pagina">Seu quizz está pronto!</p>
-                          <div class="cq-container-image-success">
-                            <img class="cq-image-success" src="${URLImagemQuizz}" alt="" />
-                            <p>${tituloQuizz}</>
-                          </div>
-                          <button type="button" class="cq-button cq-button-acessar-quizz" onclick="direcionaParaVisualizacao(${response.data.id})">
-                            Acessar Quizz
-                          </button>
-                          <a class="cq-home" href="./index.html">
-                            Voltar pra home
-                          </a>
-                          `;
-      const sucesso = document.querySelector(".cq-sucesso-quizz");
-      sucesso.innerHTML = sucessoHTML;
-      sucesso.classList.remove("cq-escondido");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  if (levels && levels.length > 0) {
+    let exists = false;
+    for (let i = 0; i < levels.length; i++) {
+      if (levels[i].minValue === 0) {
+        exists = true;
+      }
+    }
+    if (!exists) {
+      errorPorcentagem();
+    } else {
+      axios
+        .post(`${urlBase}quizzes`, {
+          title: tituloQuizz,
+          image: URLImagemQuizz,
+          questions: questions,
+          levels: levels,
+        })
+        .then((response) => {
+          let localIds = localStorage.getItem("quizzes-id");
+          let quizzesIds = localIds ? JSON.parse(localIds) : [];
+          quizzesIds.push(response.data.id);
+          localStorage.setItem("quizzes-id", JSON.stringify(quizzesIds));
+          document
+            .querySelector(".cq-niveis-quizz")
+            .classList.add("cq-escondido");
+          let sucessoHTML = ` <p class="cq-titulo-pagina">Seu quizz está pronto!</p>
+                              <div class="cq-container-image-success">
+                                <img class="cq-image-success" src="${URLImagemQuizz}" alt="" />
+                                <p>${tituloQuizz}</>
+                              </div>
+                              <button type="button" class="cq-button cq-button-acessar-quizz" onclick="direcionaParaVisualizacao(${response.data.id})">
+                                Acessar Quizz
+                              </button>
+                              <a class="cq-home" href="./index.html">
+                                Voltar pra home
+                              </a>
+                              `;
+          const sucesso = document.querySelector(".cq-sucesso-quizz");
+          sucesso.innerHTML = sucessoHTML;
+          sucesso.classList.remove("cq-escondido");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
 }
 
 function renderNivel(classNameContent, niveisNumber, icon) {
@@ -635,6 +724,20 @@ function renderNivel(classNameContent, niveisNumber, icon) {
                       </div>
                     </div>`;
   content.innerHTML = nivelHTML;
+}
+
+function errorPorcentagem() {
+  for (let i = 0; i < numeroNiveis; i++) {
+    const porcentagem = document.querySelector(
+      `.cq-input-porcentagem-nivel-${i + 1}`
+    );
+    if (porcentagem) {
+      porcentagem.classList.add("cq-input-validate");
+      document.querySelector(
+        `.cq-validacao-porcentagem-nivel-${i + 1}`
+      ).innerHTML = "Deve digitar um valor 0 pelo menos";
+    }
+  }
 }
 
 function validaNiveis(num, level) {
