@@ -112,6 +112,11 @@ p {
     width: 100%;
     min-height: 150px;
     margin-bottom: 45px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 13px;
 }
 
 .lq-quizzesUsuario p {
@@ -141,15 +146,15 @@ p {
 .lq-quizzesContainer {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 13px;
 }
 
 .lq-quizz {
     width: 344px;
     height: 215px;
     border-radius: 5px;
-    margin: 0px 0px 10px 0px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -159,6 +164,8 @@ p {
     cursor: pointer;
     word-break: break-word;
     transition: .2s ease-out;
+    -webkit-box-shadow: 2px 18px 38px 0px rgba(0,0,0,0.6); 
+    box-shadow: 2px 18px 38px 0px rgba(0,0,0,0.6);
 }
 
 .lq-quizz p {

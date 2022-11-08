@@ -48,6 +48,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  padding-bottom: 20px;
 }
 
 .cq-container-pre-perguntas {
@@ -104,6 +105,16 @@ body {
   font-style: italic;
   line-height: 20px;
   padding-left: 20px;
+}
+
+.cq-input-cor {
+  color: #6b6b6b;
+  font-weight: 400;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 20px;
+  padding-left: 20px;
+  margin-top: 10px;
 }
 
 .cq-button {
@@ -171,7 +182,7 @@ body {
 }
 
 ion-icon {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .cq-container-image-success {

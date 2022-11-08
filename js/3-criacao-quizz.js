@@ -98,7 +98,8 @@ function renderizaPerguntas() {
                                   <div class="cq-validacao-texto-pergunta-1 cq-validacao"></div>
                                 </div>
                                 <div class="cq-caixa-input-individual">
-                                  <input class="cq-input-cor-fundo-pergunta-1" type="text" placeholder="Cor de fundo da pergunta" />
+                                  <p class="cq-input-cor">Cor de fundo da pergunta (HEX)</p>
+                                  <input class="cq-input-cor-fundo-pergunta-1" type="color" placeholder="Cor de fundo da pergunta" value="#5ddfc9" />
                                   <div class="cq-validacao-cor-fundo-pergunta-1 cq-validacao"></div>
                                 </div>
                               </div>
@@ -147,17 +148,14 @@ function renderizaPerguntas() {
                             </div>`;
       } else {
         perguntasHTML += `<div class="cq-container-central">
-                            <div class="cq-container-pre-perguntas cq-container-inputs pergunta-${
-                              i + 1
-                            }">
+                            <div class="cq-container-pre-perguntas cq-container-inputs pergunta-${i + 1
+          }">
                               <p class="cq-titulo-p">Pergunta ${i + 1}</p>
-                              <ion-icon name="create-outline" onclick="renderPergunta('cq-content-pergunta-${
-                                i + 1
-                              }', ${i + 1}, this)"></ion-icon>
+                              <ion-icon name="create-outline" onclick="renderPergunta('cq-content-pergunta-${i + 1
+          }', ${i + 1}, this)"></ion-icon>
                             </div>
-                            <div class="cq-container-central cq-content-pergunta-${
-                              i + 1
-                            }"></div>
+                            <div class="cq-container-central cq-content-pergunta-${i + 1
+          }"></div>
                           </div>`;
       }
     }
@@ -179,7 +177,8 @@ function renderPergunta(classNameContent, perguntaNumber, icon) {
                           <div class="cq-validacao-texto-pergunta-${perguntaNumber} cq-validacao"></div>
                         </div>
                         <div class="cq-caixa-input-individual">
-                          <input class="cq-input-cor-fundo-pergunta-${perguntaNumber}" type="text" placeholder="Cor de fundo da pergunta" />
+                        <p class="cq-input-cor">Cor de fundo da pergunta (HEX)</p>
+                          <input class="cq-input-cor-fundo-pergunta-${perguntaNumber}" type="color" placeholder="Cor de fundo da pergunta" value="#5ddfc9"/>
                           <div class="cq-validacao-cor-fundo-pergunta-${perguntaNumber} cq-validacao"></div>
                         </div>
                       </div>
@@ -603,17 +602,14 @@ function renderizaNiveis() {
                         </div>`;
       } else {
         niveisHTML += `<div class="cq-container-central">
-                        <div class="cq-container-pre-niveis cq-container-inputs nivel-${
-                          i + 1
-                        }">
+                        <div class="cq-container-pre-niveis cq-container-inputs nivel-${i + 1
+          }">
                           <p class="cq-titulo-p">Nível ${i + 1}</p>
-                          <ion-icon name="create-outline" onclick="renderNivel('cq-content-nivel-${
-                            i + 1
-                          }', ${i + 1}, this)"></ion-icon>
+                          <ion-icon name="create-outline" onclick="renderNivel('cq-content-nivel-${i + 1
+          }', ${i + 1}, this)"></ion-icon>
                         </div>
-                        <div class="cq-container-central cq-content-nivel-${
-                          i + 1
-                        }"></div>
+                        <div class="cq-container-central cq-content-nivel-${i + 1
+          }"></div>
                       </div>`;
       }
     }
